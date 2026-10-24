@@ -11,3 +11,71 @@
 .tooltip::after {
     display: none !important;
 }
+
+/* KEYBOARD */
+#keyboard {
+    display: flex;
+    padding: 5px;
+    border-style: solid;
+    border-width: 10px 5px 5px 5px;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.5);
+    background-color: #232323;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    font-size: 8px;
+    text-align: left;
+}
+
+#keycaps_background {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    border-radius: 5px;
+    background-color: #000000;
+}
+
+#keyboard .row {
+    display: flex;
+    flex-direction: row;
+}
+
+.keycap {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    margin: 2px;
+    border-style: solid;
+    border-width: 3px 8px 8px 8px;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.5);
+    background-color: #b51a00;
+    cursor: pointer;
+    user-select: none;
+}
+
+#keyboard .shadow {
+    position: absolute;
+    top: -3px;
+    left: -8px;
+    height: 50px;
+    width: 50px;
+    padding: 3px 8px 8px 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.keycap_top {
+    height: 100%;
+    width: 100%;
+    padding: 4px 0px 0px 4px;
+    border-radius: 5px;
+    background-color: #b51a00;
+}
+
+.keycap_top .text {
+    color: #ebebeb;
+}
+
+.keycap.pressed {
+    transform: scale(0.95) translate(0px, 2px);
+    transition: 0.05s ease-in-out;
+}
