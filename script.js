@@ -567,3 +567,131 @@ function resetKeyboardColors() {
 
 // Reset colors on click.
 resetColorsButton.addEventListener("click", resetKeyboardColors);
+
+
+/******************
+* TYPING PREVIEW *
+******************/
+
+const typingPreview = document.getElementById("typing_preview");
+
+// Display a character or handle a special key.
+
+/* TYPING PREVIEW */
+
+// Display a character or handle a special key.
+function updateTypingPreview(code, character = "") {
+  const start = typingPreview.selectionStart;
+  const end = typingPreview.selectionEnd;
+
+  if (code === "Backspace") {
+    // Delete selected text.
+    if (start !== end) {
+      typingPreview.setRangeText("", start, end, "start");
+    } else if (start > 0) {
+      // Delete the previous character.
+      typingPreview.setRangeText("", start - 1, start, "start");
+    }
+  } else if (code === "Delete") {
+    if (start !== end) {
+      typingPreview.setRangeText("", start, end, "start");
+    } else if (start < typingPreview.value.length) {
+      typingPreview.setRangeText("", start, start + 1, "start");
+    }
+  } else {
+    let value = "";
+
+    if (code === "Space") {
+      value = " ";
+    } else if (character.length === 1) {
+      value = character;
+    }
+
+    if (value) {
+      // Replace selected text or insert at the cursor.
+      typingPreview.setRangeText(value, start, end, "end");
+    }
+  }
+
+  // Keep the typing preview focused.
+  typingPreview.focus({ preventScroll: true });
+}
+
+
+// Get the character displayed on a virtual key.
+function getVirtualCharacter(key) {
+  const text = key.querySelector(".keycap_text");
+
+  if (!text) {
+    return "";
+  }
+
+  const characters = Array.from(text.childNodes)
+    .filter(function (node) {
+      return node.nodeType === Node.TEXT_NODE &&
+        node.textContent.trim() !== "";
+    })
+    .map(function (node) {
+      return node.textContent.trim();
+    });
+
+  if (characters.length === 0) {
+    return "";
+  }
+
+  let character = characters[0];
+
+  // Original AZERTY labels display shifted characters first.
+  if (currentLayout === "azerty" && characters.length > 1) {
+    character = characters[characters.length - 1];
+  }
+
+  // Use lowercase letters by default.
+  if (/^[A-Z]$/.test(character)) {
+    character = character.toLowerCase();
+  }
+
+  return character;
+}
+
+// Physical keyboard input.
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey || event.metaKey || event.altKey || event.isComposing) {
+    return;
+  }
+
+  // Ignore inputs used by the configurator.
+  if (event.target instanceof HTMLElement) {
+    if (event.target.matches("input:not(#typing_preview), select, button")) {
+      return;
+    }
+  }
+
+  updateTypingPreview(event.code, event.key);
+});
+
+// Virtual keyboard input.
+keyboardBackground.addEventListener("pointerdown", function (event) {
+  const key = event.target.closest(".keycap");
+
+  if (!key) {
+    return;
+  }
+
+  const code = key.dataset.code;
+
+  // Handle special keys.
+  if (code === "Backspace" || code === "Enter" || code === "Space") {
+    updateTypingPreview(code);
+    return;
+  }
+
+  // Only printable keys insert characters.
+  if (
+    key.classList.contains("alphanumeric") ||
+    key.classList.contains("numbers") ||
+    code === "Backslash"
+  ) {
+    updateTypingPreview(code, getVirtualCharacter(key));
+  }
+});

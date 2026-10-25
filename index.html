@@ -48,7 +48,10 @@
         </div>
 
         <!-- CONFIGURATOR -->
-        <div class="min-h-screen flex flex-col justify-center items-center gap-4 px-4 py-20">
+        <div class="min-h-screen px-4 py-20 flex flex-col justify-center items-center gap-4">
+            <!-- Typing preview -->
+            <input id="typing_preview" type="text" placeholder="Start typing or click the keyboard..." aria-label="Keyboard typing preview" spellcheck="false" readonly>
+
             <!-- Keyboard -->
             <div id="keyboard_container" class="w-full flex justify-center">
                 <div id="keyboard_wrapper">
@@ -75,7 +78,7 @@
             <!-- Reset colors button -->
             <div class="w-full max-w-[882px] flex justify-end">
                 <button id="reset_colors" type="button" class="btn btn-ghost btn-sm rounded">
-                    <i class="bi bi-arrow-counterclockwise"></i>
+                    <i class="bi bi-arrow-counterclockwise mt-0.5"></i>
                     Reset colors
                 </button>
             </div>

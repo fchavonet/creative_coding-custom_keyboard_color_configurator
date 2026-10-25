@@ -26,6 +26,21 @@
     overflow: hidden;
 }
 
+/* TYPING PREVIEW */
+#typing_preview {
+    width: 100%;
+    max-width: 884px;
+    height: 28px;
+    padding: 0 8px;
+    font-size: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: var(--color-base-200);
+    color: var(--color-base-content);
+    box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
 /* KEYBOARD */
 #keyboard {
     display: flex;
