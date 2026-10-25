@@ -95,10 +95,15 @@ function createKeyboard(keyboardLayout) {
 const soundToggle = document.getElementById("sound_toggle");
 const soundIcon = soundToggle.querySelector("i");
 const soundPath = "./assets/audio/keyboard_key.mp3";
+
 let soundEnabled = true;
 let soundContext = null;
 let soundBuffer = null;
 let soundGain = null;
+
+const activeSounds = [];
+const maxSimultaneousSounds = 4;
+const maxSoundDuration = 0.24;
 
 // Restore the saved sound preference.
 try {
@@ -143,20 +148,51 @@ async function loadSound() {
     }
 
     const buffer = await response.arrayBuffer();
+
     soundContext = new AudioContextClass();
     soundBuffer = await soundContext.decodeAudioData(buffer);
 
-    // Keep the volume comfortable during rapid typing.
+    // Control the overall volume.
     soundGain = soundContext.createGain();
-    soundGain.gain.value = 0.3;
-    soundGain.connect(soundContext.destination);
+    soundGain.gain.value = 0.28;
+
+    // Smooth out simultaneous keypress peaks.
+    const compressor = soundContext.createDynamicsCompressor();
+
+    compressor.threshold.value = -24;
+    compressor.knee.value = 12;
+    compressor.ratio.value = 3;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.12;
+
+    soundGain.connect(compressor);
+    compressor.connect(soundContext.destination);
   } catch (error) {
     console.error("Keyboard sound loading error:", error);
   }
 }
 
-// Play a new sound for each key press.
-function playSound() {
+// Stop an older sound smoothly.
+function fadeOutSound(voice) {
+  if (!soundContext) {
+    return;
+  }
+
+  const now = soundContext.currentTime;
+
+  voice.gain.gain.cancelScheduledValues(now);
+  voice.gain.gain.setValueAtTime(0.15, now);
+  voice.gain.gain.linearRampToValueAtTime(0, now + 0.015);
+
+  try {
+    voice.source.stop(now + 0.02);
+  } catch (error) {
+    // The source may already have stopped.
+  }
+}
+
+// Play a slightly different sound for each keypress.
+function playSound(code = "") {
   if (!soundEnabled || !soundContext || !soundBuffer || !soundGain) {
     return;
   }
@@ -167,10 +203,75 @@ function playSound() {
     });
   }
 
+  const now = soundContext.currentTime;
+
+  // Introduce subtle natural variations.
+  let playbackRate = 0.96 + Math.random() * 0.08;
+  let volume = 0.75 + Math.random() * 0.20;
+
+  // Larger keys produce slightly deeper sounds.
+  if (code === "Space") {
+    playbackRate *= 0.90;
+    volume *= 1.05;
+  } else if (code === "Enter" || code === "Backspace") {
+    playbackRate *= 0.95;
+  } else if (
+    code.startsWith("Shift") ||
+    code.startsWith("Control") ||
+    code.startsWith("Alt")
+  ) {
+    playbackRate *= 0.97;
+    volume *= 0.90;
+  }
+
+  // Prevent excessive overlapping sounds.
+  if (activeSounds.length >= maxSimultaneousSounds) {
+    const oldestSound = activeSounds.shift();
+    fadeOutSound(oldestSound);
+  }
+
   const source = soundContext.createBufferSource();
+  const gain = soundContext.createGain();
+
   source.buffer = soundBuffer;
-  source.connect(soundGain);
-  source.start(0);
+  source.playbackRate.value = playbackRate;
+
+  // Limit playback duration to reduce excessive overlap.
+  const duration = Math.min(
+    soundBuffer.duration / playbackRate,
+    maxSoundDuration
+  );
+
+  const fadeDuration = Math.min(0.06, duration * 0.3);
+  const endTime = now + duration;
+
+  // Short attack and progressive release.
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(volume, now + 0.002);
+  gain.gain.setValueAtTime(volume, endTime - fadeDuration);
+  gain.gain.linearRampToValueAtTime(0, endTime);
+
+  source.connect(gain);
+  gain.connect(soundGain);
+
+  const voice = { source, gain };
+
+  activeSounds.push(voice);
+
+  // Remove completed sounds from the active list.
+  source.onended = function () {
+    const index = activeSounds.indexOf(voice);
+
+    if (index !== -1) {
+      activeSounds.splice(index, 1);
+    }
+
+    source.disconnect();
+    gain.disconnect();
+  };
+
+  source.start(now);
+  source.stop(endTime);
 }
 
 // Enable or disable the keyboard sound.
@@ -189,6 +290,7 @@ soundToggle.addEventListener("click", function () {
 updateSoundButton();
 loadSound();
 
+
 /********************
 * KEYBOARD BEHAVIOR *
 ********************/
@@ -197,7 +299,7 @@ loadSound();
 function pressKey(key) {
   if (key && !key.classList.contains("pressed")) {
     key.classList.add("pressed");
-    playSound();
+    playSound(key.dataset.code);
   }
 }
 
