@@ -39,12 +39,12 @@
     border-width: 10px 5px 5px 5px;
     border-radius: 5px;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.5);
-    background-color: #232323;
+    background-color: var(--keyboard-color, #232323);
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     transform-origin: top left;
 }
 
-#keycaps_background {
+#keyboard_background {
     display: flex;
     flex-direction: column;
     padding: 2px;
@@ -90,10 +90,6 @@
     padding: 4px 0px 0px 4px;
     border-radius: 5px;
     background-color: #e3e7ef;
-}
-
-.keycap_text {
-    color: #ebebeb;
 }
 
 .keycap.pressed {
@@ -154,24 +150,42 @@
 
 /* DEFAULT KEYCAP COLORS */
 .keycap.alphanumeric,
-.keycap_top.alphanumeric,
-.keycap.numbers,
-.keycap_top.numbers,
-.keycap.control_pad,
-.keycap_top.control_pad {
-    background-color: #7a7a7a;
+.keycap_top.alphanumeric {
+    background-color: var(--letters-color, #7a7a7a);
 }
 
-.keycap.arrow_pad,
-.keycap_top.arrow_pad,
-.keycap.esc_space_enter,
-.keycap_top.esc_space_enter {
-    background-color: #b51a00;
+.keycap.numbers,
+.keycap_top.numbers {
+    background-color: var(--numbers-color, #7a7a7a);
 }
 
 .keycap.modifiers,
 .keycap_top.modifiers {
-    background-color: #232323;
+    background-color: var(--modifiers-color, #232323);
+}
+
+.keycap.control_pad,
+.keycap_top.control_pad {
+    background-color: var(--control-pad-color, #7a7a7a);
+}
+
+.keycap.arrow_pad,
+.keycap_top.arrow_pad {
+    background-color: var(--arrow-pad-color, #b51a00);
+}
+
+.keycap.esc_space_enter,
+.keycap_top.esc_space_enter {
+    background-color: var(--special-color, #b51a00);
+}
+
+.keycap[data-code="Escape"],
+.keycap[data-code="Escape"] .keycap_top {
+    background-color: var(--escape-color, #b51a00);
+}
+
+.keycap_text {
+    color: var(--text-color, #ebebeb);
 }
 
 /* RESPONSIVE KEYBOARD */
@@ -182,4 +196,88 @@
 #keyboard_wrapper {
     position: relative;
     flex-shrink: 0;
+}
+
+/* COLOR PICKUP */
+#color_pickup_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 10px;
+    width: 100%;
+    max-width: 884px;
+    padding: 16px;
+    border-radius: 5px;
+    background-color: var(--color-base-200);
+    box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.color_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 80px;
+    width: 80px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 8px rgba(100, 100, 100, 0.2);
+    overflow: hidden;
+}
+
+.color_picker {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 60px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.color_picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color_picker::-webkit-color-swatch {
+    border: none;
+}
+
+.color_picker::-moz-color-swatch {
+    border: none;
+}
+
+.color_input {
+    width: 100%;
+    height: 18px;
+    padding: 2px 24px 2px 4px;
+    border: none;
+    background: transparent;
+    color: #333333;
+    font-family: monospace;
+    font-size: 10px;
+    outline: none;
+}
+
+.copy_button {
+    position: absolute;
+    top: 62px;
+    right: 5px;
+    border: none;
+    background: transparent;
+    color: #555555;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.color_label {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    color: #333333;
+    font-size: 8px;
+    font-weight: 900;
+    text-transform: uppercase;
 }

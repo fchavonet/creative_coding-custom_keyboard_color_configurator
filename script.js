@@ -262,3 +262,205 @@ layoutSelector.addEventListener("change", function () {
 const initialLayout = getInitialLayout();
 layoutSelector.value = initialLayout;
 loadKeyboard(initialLayout);
+
+
+/****************
+* COLOR PICKUP *
+****************/
+
+const colorPickup = document.getElementById("color_pickup_container");
+
+const colorDefinitions = [
+  { id: "keyboard", label: "Keyboard", value: "#232323" },
+  { id: "letters", label: "Letters", value: "#7a7a7a" },
+  { id: "arrow_pad", label: "Arrows", value: "#b51a00" },
+  { id: "control_pad", label: "Control", value: "#7a7a7a" },
+  { id: "special", label: "Special", value: "#b51a00" },
+  { id: "modifiers", label: "Modifiers", value: "#232323" },
+  { id: "numbers", label: "Numbers", value: "#7a7a7a" },
+  { id: "escape", label: "Escape", value: "#b51a00" },
+  { id: "text", label: "Text", value: "#ebebeb" }
+];
+
+const keyboardColors = {};
+
+// Validate and normalize hexadecimal colors.
+function normalizeColor(value) {
+  let color = value.trim();
+
+  if (!color.startsWith("#")) {
+    color = "#" + color;
+  }
+
+  if (!/^#[0-9a-fA-F]{6}$/.test(color)) {
+    return null;
+  }
+
+  return color.toLowerCase();
+}
+
+// Apply a color to the keyboard.
+function updateKeyboardColor(id, value) {
+  keyboardColors[id] = value;
+
+  const property = `--${id.replace(/_/g, "-")}-color`;
+  keyboard.style.setProperty(property, value);
+
+  // Save the current colors.
+  try {
+    localStorage.setItem(
+      "keyboard_colors",
+      JSON.stringify(keyboardColors)
+    );
+  } catch (error) {
+    console.warn("Unable to save keyboard colors:", error);
+  }
+}
+
+// Restore previously saved colors.
+function getSavedColors() {
+  try {
+    const saved = localStorage.getItem("keyboard_colors");
+
+    if (saved) {
+      const colors = JSON.parse(saved);
+
+      if (colors && typeof colors === "object") {
+        return colors;
+      }
+    }
+  } catch (error) {
+    console.warn("Unable to restore keyboard colors:", error);
+  }
+
+  return {};
+}
+
+// Generate the color selectors.
+function createColorPickup() {
+  const savedColors = getSavedColors();
+
+  colorDefinitions.forEach(function (data) {
+    const container = document.createElement("div");
+    container.classList.add("color_container");
+    container.dataset.colorId = data.id;
+
+    const colorPicker = document.createElement("input");
+    colorPicker.type = "color";
+    colorPicker.classList.add("color_picker");
+
+    const colorInput = document.createElement("input");
+    colorInput.type = "text";
+    colorInput.classList.add("color_input");
+    colorInput.maxLength = 7;
+    colorInput.spellcheck = false;
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.classList.add("copy_button");
+    copyButton.innerHTML = '<i class="bi bi-copy"></i>';
+    copyButton.setAttribute("aria-label", "Copy " + data.label + " color");
+
+    const label = document.createElement("span");
+    label.classList.add("color_label");
+    label.textContent = data.label;
+
+    // Set the initial color.
+
+    let initialColor = data.value;
+
+    if (typeof savedColors[data.id] === "string") {
+      const savedColor = normalizeColor(savedColors[data.id]);
+
+      if (savedColor) {
+        initialColor = savedColor;
+      }
+    }
+
+    colorPicker.value = initialColor;
+    colorInput.value = initialColor;
+    updateKeyboardColor(data.id, initialColor);
+
+    // Update from the color picker.
+    colorPicker.addEventListener("input", function () {
+      const color = colorPicker.value.toLowerCase();
+
+      colorInput.value = color;
+      updateKeyboardColor(data.id, color);
+    });
+
+    // Update from the hexadecimal input.
+    colorInput.addEventListener("input", function () {
+      const color = normalizeColor(colorInput.value);
+
+      if (color) {
+        colorPicker.value = color;
+        updateKeyboardColor(data.id, color);
+      }
+    });
+
+    // Restore the last valid value when leaving the input.
+    colorInput.addEventListener("blur", function () {
+      colorInput.value = keyboardColors[data.id];
+    });
+
+    // Copy the hexadecimal value.
+    copyButton.addEventListener("click", async function () {
+      try {
+        await navigator.clipboard.writeText(
+          keyboardColors[data.id]
+        );
+      } catch (error) {
+        console.error("Unable to copy color:", error);
+        colorInput.focus();
+        colorInput.select();
+      }
+    });
+
+    container.appendChild(colorPicker);
+    container.appendChild(colorInput);
+    container.appendChild(copyButton);
+    container.appendChild(label);
+
+    colorPickup.appendChild(container);
+  });
+}
+
+// Initial setup.
+createColorPickup();
+
+
+/****************
+* RESET COLORS *
+****************/
+
+const resetColorsButton = document.getElementById("reset_colors");
+
+// Restore all default keyboard colors.
+function resetKeyboardColors() {
+  colorDefinitions.forEach(function (data) {
+    // Restore the keyboard color.
+    updateKeyboardColor(data.id, data.value);
+
+    // Restore the color picker and hexadecimal input.
+    const container = colorPickup.querySelector(
+      `[data-color-id="${data.id}"]`
+    );
+
+    const colorPicker = container.querySelector(".color_picker");
+    const colorInput = container.querySelector(".color_input");
+
+    colorPicker.value = data.value;
+    colorInput.value = data.value;
+  });
+
+  // Remove saved custom colors.
+  try {
+    localStorage.removeItem("keyboard_colors");
+  } catch (error) {
+    console.warn("Unable to reset saved keyboard colors:", error);
+  }
+}
+
+// Reset colors on click.
+resetColorsButton.addEventListener("click", resetKeyboardColors);
