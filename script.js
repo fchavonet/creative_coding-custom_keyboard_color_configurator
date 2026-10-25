@@ -446,6 +446,7 @@ function createColorPickup() {
   colorDefinitions.forEach(function (data) {
     const container = document.createElement("div");
     container.classList.add("color_container");
+    container.dataset.colorId = data.id;
 
     const colorPicker = document.createElement("input");
     colorPicker.type = "color";
