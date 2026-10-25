@@ -1,0 +1,367 @@
+[
+    [
+        {
+            "code": "Escape",
+            "label": "Esc",
+            "category": "esc_space_enter"
+        },
+        {
+            "code": "Digit1",
+            "label": "1<br><br>&amp;",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit2",
+            "label": "2<br><br>é",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit3",
+            "label": "3<br><br>\"",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit4",
+            "label": "4<br><br>'",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit5",
+            "label": "5<br><br>(",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit6",
+            "label": "6<br><br>-",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit7",
+            "label": "7<br><br>è",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit8",
+            "label": "8<br><br>_",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit9",
+            "label": "9<br><br>ç",
+            "category": "numbers"
+        },
+        {
+            "code": "Digit0",
+            "label": "0<br><br>à",
+            "category": "numbers"
+        },
+        {
+            "code": "Minus",
+            "label": "°<br><br>)",
+            "category": "numbers"
+        },
+        {
+            "code": "Equal",
+            "label": "+<br><br>=",
+            "category": "numbers"
+        },
+        {
+            "code": "Backspace",
+            "label": "Backspace",
+            "category": "modifiers",
+            "size": "modifiers_100"
+        },
+        {
+            "code": "Home",
+            "label": "~",
+            "category": "control_pad"
+        }
+    ],
+    [
+        {
+            "code": "Tab",
+            "label": "Tab",
+            "category": "modifiers",
+            "size": "modifiers_75"
+        },
+        {
+            "code": "KeyQ",
+            "label": "A",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyW",
+            "label": "Z",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyE",
+            "label": "E",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyR",
+            "label": "R",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyT",
+            "label": "T",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyY",
+            "label": "Y",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyU",
+            "label": "U",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyI",
+            "label": "I",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyO",
+            "label": "O",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyP",
+            "label": "P",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "BracketLeft",
+            "label": "¨<br><br>^",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "BracketRight",
+            "label": "*<br><br>$",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Backslash",
+            "label": "|<br><br>\\",
+            "category": "modifiers",
+            "size": "modifiers_75"
+        },
+        {
+            "code": "Delete",
+            "label": "Delete",
+            "category": "control_pad"
+        }
+    ],
+    [
+        {
+            "code": "CapsLock",
+            "label": "Caps Lock",
+            "category": "modifiers",
+            "size": "modifiers_90"
+        },
+        {
+            "code": "KeyA",
+            "label": "Q",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyS",
+            "label": "S",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyD",
+            "label": "D",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyF",
+            "label": "F",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyG",
+            "label": "G",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyH",
+            "label": "H",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyJ",
+            "label": "J",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyK",
+            "label": "K",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyL",
+            "label": "L",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Semicolon",
+            "label": "M",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Quote",
+            "label": "%<br><br>ù",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Enter",
+            "label": "Enter",
+            "category": "esc_space_enter",
+            "size": "modifiers_115"
+        },
+        {
+            "code": "PageUp",
+            "label": "Page<br>Up",
+            "category": "control_pad"
+        }
+    ],
+    [
+        {
+            "code": "ShiftLeft",
+            "label": "Shift",
+            "category": "modifiers",
+            "size": "modifiers_115"
+        },
+        {
+            "code": "KeyZ",
+            "label": "W",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyX",
+            "label": "X",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyC",
+            "label": "C",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyV",
+            "label": "V",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyB",
+            "label": "B",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyN",
+            "label": "N",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "KeyM",
+            "label": "?<br><br>,",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Comma",
+            "label": ".<br><br>;",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Period",
+            "label": "/<br><br>:",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "Slash",
+            "label": "§<br><br>!",
+            "category": "alphanumeric"
+        },
+        {
+            "code": "ShiftRight",
+            "label": "Shift",
+            "category": "modifiers",
+            "size": "modifiers_90"
+        },
+        {
+            "code": "ArrowUp",
+            "label": "↑",
+            "category": "arrow_pad"
+        },
+        {
+            "code": "PageDown",
+            "label": "Page<br>Down",
+            "category": "control_pad"
+        }
+    ],
+    [
+        {
+            "code": "ControlLeft",
+            "label": "Ctrl",
+            "category": "modifiers",
+            "size": "modifiers_65"
+        },
+        {
+            "code": "MetaLeft",
+            "label": "",
+            "category": "modifiers",
+            "size": "modifiers_65",
+            "logo": true
+        },
+        {
+            "code": "AltLeft",
+            "label": "Alt",
+            "category": "modifiers",
+            "size": "modifiers_65"
+        },
+        {
+            "code": "Space",
+            "label": "",
+            "category": "esc_space_enter",
+            "size": "spacebar"
+        },
+        {
+            "code": "AltRight",
+            "label": "Alt",
+            "category": "modifiers",
+            "size": "modifiers_50"
+        },
+        {
+            "code": "MetaRight",
+            "label": "Fn",
+            "category": "modifiers",
+            "size": "modifiers_50"
+        },
+        {
+            "code": "ControlRight",
+            "label": "Ctrl",
+            "category": "modifiers",
+            "size": "modifiers_50"
+        },
+        {
+            "code": "ArrowLeft",
+            "label": "←",
+            "category": "arrow_pad"
+        },
+        {
+            "code": "ArrowDown",
+            "label": "↓",
+            "category": "arrow_pad"
+        },
+        {
+            "code": "ArrowRight",
+            "label": "→",
+            "category": "arrow_pad"
+        }
+    ]
+]

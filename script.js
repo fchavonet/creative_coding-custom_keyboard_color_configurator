@@ -190,8 +190,20 @@ keyboardObserver.observe(keyboardContainer);
 * KEYBOARD LOADING *
 *******************/
 
+const layoutSelector = document.getElementById("keyboard_layout");
+const validLayouts = ["qwerty", "azerty"];
+let currentLayout = "qwerty";
+let lastLoadRequest = 0;
+
 // Load a keyboard layout from a local JSON file.
 async function loadKeyboard(layout) {
+  if (!validLayouts.includes(layout)) {
+    return;
+  }
+
+  // Ignore outdated responses when switching layouts quickly.
+  const request = ++lastLoadRequest;
+
   try {
     const response = await fetch(`./layouts/${layout}.json`);
 
@@ -201,13 +213,52 @@ async function loadKeyboard(layout) {
 
     const keyboardLayout = await response.json();
 
+    if (request !== lastLoadRequest) {
+      return;
+    }
+
     createKeyboard(keyboardLayout);
     initializeKeycapEvents();
     resizeKeyboard();
+
+    currentLayout = layout;
+    layoutSelector.value = layout;
+
+    // Remember the selected layout for the next visit.
+    try {
+      localStorage.setItem("keyboard_layout", layout);
+    } catch (error) {
+      console.warn("Unable to save keyboard layout:", error);
+    }
   } catch (error) {
-    console.error("Keyboard loading error:", error);
+    if (request === lastLoadRequest) {
+      console.error("Keyboard loading error:", error);
+      layoutSelector.value = currentLayout;
+    }
   }
 }
 
-// Default layout.
-loadKeyboard("qwerty");
+// Restore the previously selected layout, if available.
+function getInitialLayout() {
+  try {
+    const savedLayout = localStorage.getItem("keyboard_layout");
+
+    if (validLayouts.includes(savedLayout)) {
+      return savedLayout;
+    }
+  } catch (error) {
+    console.warn("Unable to restore keyboard layout:", error);
+  }
+
+  return "qwerty";
+}
+
+// Change the layout without reloading the page.
+layoutSelector.addEventListener("change", function () {
+  loadKeyboard(layoutSelector.value);
+});
+
+// Default layout (or saved preference).
+const initialLayout = getInitialLayout();
+layoutSelector.value = initialLayout;
+loadKeyboard(initialLayout);

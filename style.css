@@ -12,6 +12,20 @@
     display: none !important;
 }
 
+/* KEYBOARD LAYOUT SELECTOR */
+#keyboard_layout,
+#keyboard_layout::picker(select) {
+    appearance: base-select;
+}
+
+#keyboard_layout::picker(select) {
+    border-radius: 0.5rem !important;
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+    border: 1px solid var(--color-base-300);
+    overflow: hidden;
+}
+
 /* KEYBOARD */
 #keyboard {
     display: flex;
