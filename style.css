@@ -220,7 +220,7 @@
     width: 80px;
     height: 100px;
     border-radius: 5px;
-    background-color: #ffffff;
+    background-color: var(--color-base-200);
     box-shadow: 0px 2px 8px rgba(100, 100, 100, 0.2);
     overflow: hidden;
 }
@@ -260,17 +260,6 @@
     outline: none;
 }
 
-.copy_button {
-    position: absolute;
-    top: 62px;
-    right: 5px;
-    border: none;
-    background: transparent;
-    color: #555555;
-    font-size: 11px;
-    cursor: pointer;
-}
-
 .color_label {
     display: flex;
     flex: 1;
@@ -280,4 +269,20 @@
     font-size: 8px;
     font-weight: 900;
     text-transform: uppercase;
+}
+
+.color_input,
+.color_label {
+    background-color: #ffffff;
+}
+
+.copy_button {
+    position: absolute;
+    top: 62px;
+    right: 5px;
+    border: none;
+    background: transparent;
+    color: #555555;
+    font-size: 11px;
+    cursor: pointer;
 }
