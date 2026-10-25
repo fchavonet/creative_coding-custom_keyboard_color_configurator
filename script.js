@@ -133,6 +133,10 @@ function updateSoundButton() {
 
 // Load and decode the audio file once.
 async function loadSound() {
+  if (soundContext) {
+    return;
+  }
+
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 
   if (!AudioContextClass) {
@@ -141,6 +145,14 @@ async function loadSound() {
   }
 
   try {
+    soundContext = new AudioContextClass();
+
+    if (soundContext.state === "suspended") {
+      soundContext.resume().catch(function (error) {
+        console.warn("Unable to resume keyboard sound:", error);
+      });
+    }
+
     const response = await fetch(soundPath);
 
     if (!response.ok) {
@@ -148,8 +160,6 @@ async function loadSound() {
     }
 
     const buffer = await response.arrayBuffer();
-
-    soundContext = new AudioContextClass();
     soundBuffer = await soundContext.decodeAudioData(buffer);
 
     // Control the overall volume.
@@ -288,7 +298,16 @@ soundToggle.addEventListener("click", function () {
 
 // Initial setup.
 updateSoundButton();
-loadSound();
+
+document.addEventListener("click", loadSound, {
+  once: true,
+  capture: true
+});
+
+document.addEventListener("keydown", loadSound, {
+  once: true,
+  capture: true
+});
 
 
 /********************
