@@ -374,15 +374,15 @@ loadKeyboard(initialLayout);
 const colorPickup = document.getElementById("color_pickup_container");
 
 const colorDefinitions = [
-  { id: "keyboard", label: "Keyboard", value: "#383a3c" },
-  { id: "letters", label: "Letters", value: "#a1a3a3" },
-  { id: "arrow_pad", label: "Arrows", value: "#898c8e" },
-  { id: "control_pad", label: "Control", value: "#85888a" },
-  { id: "special", label: "Special", value: "#8d8f91" },
-  { id: "modifiers", label: "Modifiers", value: "#696c6e" },
-  { id: "numbers", label: "Numbers", value: "#777a7b" },
-  { id: "escape", label: "Escape", value: "#f28225" },
-  { id: "text", label: "Text", value: "#f2f2f0" }
+  { id: "keyboard", label: "Keyboard", value: "#232323" },
+  { id: "letters", label: "Letters", value: "#7a7a7a" },
+  { id: "arrow_pad", label: "Arrows", value: "#b51a00" },
+  { id: "control_pad", label: "Control", value: "#7a7a7a" },
+  { id: "special", label: "Special", value: "#b51a00" },
+  { id: "modifiers", label: "Modifiers", value: "#232323" },
+  { id: "numbers", label: "Numbers", value: "#7a7a7a" },
+  { id: "escape", label: "Escape", value: "#b51a00" },
+  { id: "text", label: "Text", value: "#ebebeb" }
 ];
 
 const keyboardColors = {};
