@@ -87,14 +87,117 @@ function createKeyboard(keyboardLayout) {
 }
 
 
+
+/******************
+* KEYBOARD SOUND *
+******************/
+
+const soundToggle = document.getElementById("sound_toggle");
+const soundIcon = soundToggle.querySelector("i");
+const soundPath = "./assets/audio/keyboard_key.mp3";
+let soundEnabled = true;
+let soundContext = null;
+let soundBuffer = null;
+let soundGain = null;
+
+// Restore the saved sound preference.
+try {
+  const savedSound = localStorage.getItem("keyboard_sound");
+
+  if (savedSound === "false") {
+    soundEnabled = false;
+  }
+} catch (error) {
+  console.warn("Unable to restore keyboard sound:", error);
+}
+
+// Update the sound button appearance.
+function updateSoundButton() {
+  soundToggle.setAttribute("aria-pressed", String(soundEnabled));
+
+  if (soundEnabled) {
+    soundIcon.className = "bi bi-volume-up-fill text-lg";
+    soundToggle.setAttribute("aria-label", "Mute keyboard sound");
+    soundToggle.title = "Mute keyboard sound";
+  } else {
+    soundIcon.className = "bi bi-volume-mute-fill text-lg";
+    soundToggle.setAttribute("aria-label", "Enable keyboard sound");
+    soundToggle.title = "Enable keyboard sound";
+  }
+}
+
+// Load and decode the audio file once.
+async function loadSound() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) {
+    console.warn("Web Audio API is not supported by this browser.");
+    return;
+  }
+
+  try {
+    const response = await fetch(soundPath);
+
+    if (!response.ok) {
+      throw new Error("Failed to load keyboard sound.");
+    }
+
+    const buffer = await response.arrayBuffer();
+    soundContext = new AudioContextClass();
+    soundBuffer = await soundContext.decodeAudioData(buffer);
+
+    // Keep the volume comfortable during rapid typing.
+    soundGain = soundContext.createGain();
+    soundGain.gain.value = 0.3;
+    soundGain.connect(soundContext.destination);
+  } catch (error) {
+    console.error("Keyboard sound loading error:", error);
+  }
+}
+
+// Play a new sound for each key press.
+function playSound() {
+  if (!soundEnabled || !soundContext || !soundBuffer || !soundGain) {
+    return;
+  }
+
+  if (soundContext.state === "suspended") {
+    soundContext.resume().catch(function (error) {
+      console.warn("Unable to resume keyboard sound:", error);
+    });
+  }
+
+  const source = soundContext.createBufferSource();
+  source.buffer = soundBuffer;
+  source.connect(soundGain);
+  source.start(0);
+}
+
+// Enable or disable the keyboard sound.
+soundToggle.addEventListener("click", function () {
+  soundEnabled = !soundEnabled;
+  updateSoundButton();
+
+  try {
+    localStorage.setItem("keyboard_sound", String(soundEnabled));
+  } catch (error) {
+    console.warn("Unable to save keyboard sound:", error);
+  }
+});
+
+// Initial setup.
+updateSoundButton();
+loadSound();
+
 /********************
 * KEYBOARD BEHAVIOR *
 ********************/
 
 // Press a key.
 function pressKey(key) {
-  if (key) {
+  if (key && !key.classList.contains("pressed")) {
     key.classList.add("pressed");
+    playSound();
   }
 }
 
@@ -271,15 +374,15 @@ loadKeyboard(initialLayout);
 const colorPickup = document.getElementById("color_pickup_container");
 
 const colorDefinitions = [
-  { id: "keyboard", label: "Keyboard", value: "#232323" },
-  { id: "letters", label: "Letters", value: "#7a7a7a" },
-  { id: "arrow_pad", label: "Arrows", value: "#b51a00" },
-  { id: "control_pad", label: "Control", value: "#7a7a7a" },
-  { id: "special", label: "Special", value: "#b51a00" },
-  { id: "modifiers", label: "Modifiers", value: "#232323" },
-  { id: "numbers", label: "Numbers", value: "#7a7a7a" },
-  { id: "escape", label: "Escape", value: "#b51a00" },
-  { id: "text", label: "Text", value: "#ebebeb" }
+  { id: "keyboard", label: "Keyboard", value: "#383a3c" },
+  { id: "letters", label: "Letters", value: "#a1a3a3" },
+  { id: "arrow_pad", label: "Arrows", value: "#898c8e" },
+  { id: "control_pad", label: "Control", value: "#85888a" },
+  { id: "special", label: "Special", value: "#8d8f91" },
+  { id: "modifiers", label: "Modifiers", value: "#696c6e" },
+  { id: "numbers", label: "Numbers", value: "#777a7b" },
+  { id: "escape", label: "Escape", value: "#f28225" },
+  { id: "text", label: "Text", value: "#f2f2f0" }
 ];
 
 const keyboardColors = {};
@@ -343,7 +446,6 @@ function createColorPickup() {
   colorDefinitions.forEach(function (data) {
     const container = document.createElement("div");
     container.classList.add("color_container");
-    container.dataset.colorId = data.id;
 
     const colorPicker = document.createElement("input");
     colorPicker.type = "color";

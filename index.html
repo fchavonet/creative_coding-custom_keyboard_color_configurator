@@ -26,14 +26,17 @@
     <main>
         <!-- TOP CONTAINER -->
         <div class="fixed top-0 left-0 w-full h-auto p-4 flex flex-row justify-between items-center">
-            <div>
+            <div class="flex flex-row items-center gap-2">
                 <!-- Keyboard layout selector -->
-                <select id="keyboard_layout" class="select select-sm w-32 rounded">
+                <select id="keyboard_layout" class="select select-sm w-32 rounded" aria-label="Keyboard layout">
                     <option value="qwerty">QWERTY</option>
                     <option value="azerty">AZERTY</option>
                 </select>
 
                 <!-- Toggle sound button -->
+                <button id="sound_toggle" type="button" class="btn btn-sm btn-square pt-0.5 flex justify-center items-center rounded bg-transparent" aria-label="Mute keyboard sound" aria-pressed="true" title="Mute keyboard sound">
+                    <i class="bi bi-volume-up-fill text-lg" aria-hidden="true"></i>
+                </button>
             </div>
 
             <!-- Toggle mode button -->
