@@ -27,8 +27,7 @@
         <!-- TOP CONTAINER -->
         <div class="fixed top-0 left-0 w-full h-auto p-4 flex flex-row justify-between items-center">
             <!-- Toggle sound button -->
-            <div>
-            </div>
+            <div></div>
 
             <!-- Toggle mode button -->
             <label class="swap swap-rotate">
@@ -41,22 +40,26 @@
         <!-- CONFIGURATOR -->
         <div class="min-h-screen flex flex-col justify-center items-center gap-4 px-4 py-20">
             <!-- Keyboard -->
-            <div id="keyboard">
-                <div id="keycaps_background">
-                    <div class="row">
-                        <!-- Esc, Space, Enter keys -->
-                        <div class="keycap esc_space_enter" data-code="Escape">
-                            <div class="shadow">
-                                <div class="keycap_top esc_space_enter">
-                                    <span class="text">Esc</span>
-                                </div>
-                            </div>
-                        </div>
+            <div id="keyboard_container" class="w-full flex justify-center">
+                <div id="keyboard_wrapper">
+                    <div id="keyboard">
+                        <div id="keyboard_background"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Color pickup -->
+            <!-- Keycap template -->
+            <template id="keycap_template">
+                <div class="keycap">
+                    <div class="keycap_shadow">
+                        <div class="keycap_top">
+                            <span class="keycap_text"></span>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Color -->
             <div id="color_pickup_container" class="w-full flex justify-center">
 
             </div>

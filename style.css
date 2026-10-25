@@ -15,15 +15,19 @@
 /* KEYBOARD */
 #keyboard {
     display: flex;
+    width: max-content;
     padding: 5px;
+    font-family: sans-serif;
+    font-size: 8px;
+    line-height: normal;
+    text-align: left;
     border-style: solid;
     border-width: 10px 5px 5px 5px;
     border-radius: 5px;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.5);
     background-color: #232323;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-    font-size: 8px;
-    text-align: left;
+    transform-origin: top left;
 }
 
 #keycaps_background {
@@ -34,48 +38,134 @@
     background-color: #000000;
 }
 
-#keyboard .row {
+.keyboard_row {
     display: flex;
     flex-direction: row;
 }
 
 .keycap {
     position: relative;
-    height: 50px;
+    flex-shrink: 0;
     width: 50px;
+    height: 50px;
     margin: 2px;
     border-style: solid;
     border-width: 3px 8px 8px 8px;
     border-radius: 5px;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.5);
-    background-color: #b51a00;
+    background-color: #e3e7ef;
     cursor: pointer;
     user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
-#keyboard .shadow {
+.keycap_shadow {
     position: absolute;
     top: -3px;
     left: -8px;
-    height: 50px;
     width: 50px;
+    height: 50px;
     padding: 3px 8px 8px 8px;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
 .keycap_top {
-    height: 100%;
     width: 100%;
+    height: 100%;
     padding: 4px 0px 0px 4px;
     border-radius: 5px;
-    background-color: #b51a00;
+    background-color: #e3e7ef;
 }
 
-.keycap_top .text {
+.keycap_text {
     color: #ebebeb;
 }
 
 .keycap.pressed {
     transform: scale(0.95) translate(0px, 2px);
-    transition: 0.05s ease-in-out;
+    transition: transform 0.05s ease-in-out;
+}
+
+/* KEYCAP SIZE EXCEPTIONS */
+.modifiers_65 {
+    width: 65px;
+}
+
+.modifiers_75 {
+    width: 75px;
+}
+
+.modifiers_90 {
+    width: 90px;
+}
+
+.modifiers_100 {
+    width: 100px;
+}
+
+.modifiers_115 {
+    width: 115px;
+}
+
+.spacebar {
+    width: 326px;
+}
+
+/* KEYCAP TEXT EXCEPTIONS */
+.arrow_pad_text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+/* UBUNTU LOGO */
+#logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    display: block;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    -webkit-mask: url("./assets/images/ubuntu_logo.png") center / contain no-repeat;
+    mask: url("./assets/images/ubuntu_logo.png") center / contain no-repeat;
+}
+
+/* DEFAULT KEYCAP COLORS */
+.keycap.alphanumeric,
+.keycap_top.alphanumeric,
+.keycap.numbers,
+.keycap_top.numbers,
+.keycap.control_pad,
+.keycap_top.control_pad {
+    background-color: #7a7a7a;
+}
+
+.keycap.arrow_pad,
+.keycap_top.arrow_pad,
+.keycap.esc_space_enter,
+.keycap_top.esc_space_enter {
+    background-color: #b51a00;
+}
+
+.keycap.modifiers,
+.keycap_top.modifiers {
+    background-color: #232323;
+}
+
+/* RESPONSIVE KEYBOARD */
+#keyboard_container {
+    min-width: 0;
+}
+
+#keyboard_wrapper {
+    position: relative;
+    flex-shrink: 0;
 }
