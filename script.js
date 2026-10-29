@@ -480,6 +480,14 @@ function getInitialLayout() {
 // Change the layout without reloading the page.
 layoutSelector.addEventListener("change", function () {
   loadKeyboard(layoutSelector.value);
+
+  // Release focus from the layout selector.
+  layoutSelector.blur();
+
+  // Restore focus after the native dropdown has closed.
+  setTimeout(function () {
+    typingPreview.focus({ preventScroll: true });
+  }, 0);
 });
 
 // Default layout (or saved preference).
@@ -740,7 +748,7 @@ function updateTypingPreview(code, character = "") {
 
 
 // Get the character displayed on a virtual key.
-function getVirtualCharacter(key) {
+function getVirtualCharacter(key, shifted = false, capsLocked = false) {
   const text = key.querySelector(".keycap_text");
 
   if (!text) {
@@ -762,13 +770,17 @@ function getVirtualCharacter(key) {
 
   let character = characters[0];
 
-  // Original AZERTY labels display shifted characters first.
+  // AZERTY labels display shifted characters first.
   if (currentLayout === "azerty" && characters.length > 1) {
+    if (!shifted) {
+      character = characters[characters.length - 1];
+    }
+  } else if (shifted && characters.length > 1) {
     character = characters[characters.length - 1];
   }
 
-  // Use lowercase letters by default.
-  if (/^[A-Z]$/.test(character)) {
+  // Shift and Caps Lock determine letter case.
+  if (/^[A-Z]$/.test(character) && shifted === capsLocked) {
     character = character.toLowerCase();
   }
 
@@ -788,7 +800,23 @@ document.addEventListener("keydown", function (event) {
     }
   }
 
-  updateTypingPreview(event.code, event.key);
+  // Resolve the character using the selected keyboard layout.
+  const key = getKey(event.code);
+  let character = event.key;
+
+  if (key && (
+    key.classList.contains("alphanumeric") ||
+    key.classList.contains("numbers") ||
+    event.code === "Backslash"
+  )) {
+    character = getVirtualCharacter(
+      key,
+      event.shiftKey,
+      event.getModifierState("CapsLock")
+    );
+  }
+
+  updateTypingPreview(event.code, character);
 });
 
 // Virtual keyboard input.
